@@ -48,11 +48,12 @@ Shell one-liners and pipelines are fine and do not count as scripts. Before writ
 4. **Script last.** A one-off script goes in the session scratchpad. If it is reusable, propose saving it ("I'd like to save this as `<name>`: <purpose>"). Promote it to `~/.config/agents/tools/` only on approval and under the admission rules in `tools.md`.
 
 ### Git Rule
-- **Never run state-modifying git commands.** The user always runs them: `add`, `commit`, `push`, `checkout`/`switch`, `branch`, `merge`, `rebase`, `reset`, `stash`, `tag`, and `gh pr create`/`ready`/`merge`. Do not offer to run them either. Read-only commands (`status`, `diff`, `log`, `show`, `fetch`, `gh pr view`/`list`/`diff`) are fine.
+- **Never run state-modifying git commands.** The user always runs them: `add`, `commit`, `push`, `pull`, `fetch`, `checkout`/`switch`, `branch` (anything beyond listing), `merge`, `rebase`, `reset`, `stash`, `tag`, `clean`, `restore`, `rm`, `mv`, `config`, `init` and anything similar, plus `gh pr create`/`ready`/`merge`. Do not offer to run them either. Read-only commands (`status`, `diff`, `log`, `show`, `ls-files`, `blame`, `branch` listing, `gh pr view`/`list`/`diff`) are fine.
 - When work is ready, list the exact commands for the user to run instead.
 
 ### Dependency Rule
 - **Native/Zero-Dep Priority:** Never install third-party packages or alter host shell environments without explicit confirmation. Always favor standard C libraries and native APIs.
+- When asking, explain why it is needed and why it can't reasonably be done without it.
 
 ---
 
