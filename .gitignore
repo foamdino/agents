@@ -1,0 +1,4 @@
+# Hook and agent logs record prompts, project paths and session ids: never commit them.
+# Hooks write theirs to ~/.claude/hooks/, outside this repo; these patterns catch strays.
+*.log
+.last_error_report

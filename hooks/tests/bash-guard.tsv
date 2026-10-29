@@ -1,0 +1,15 @@
+# bash-guard.sh: no package installs; no make/cmake where nob.c exists
+deny	Bash	brew install mlr	/Users/jacksonke/thg-src/estate
+deny	Bash	pip3 install requests	/Users/jacksonke/thg-src/estate
+deny	Bash	cd x && npm i lodash	/Users/jacksonke/thg-src/estate
+deny	Bash	python3 -m pip install foo	/Users/jacksonke/thg-src/estate
+deny	Bash	uv add httpx	/Users/jacksonke/thg-src/estate
+deny	Bash	sudo cargo install ripgrep	/Users/jacksonke/thg-src/estate
+deny	Bash	make	/Users/jacksonke/thg-src/estate
+deny	Bash	cd build; cmake ..	/Users/jacksonke/thg-src/estate
+allow	Bash	rg "pip install" docs	/Users/jacksonke/thg-src/estate
+allow	Bash	brew list	/Users/jacksonke/thg-src/estate
+allow	Bash	uv run tools/cloney/clone_orgs.py --teams-only ~/thg-src	/Users/jacksonke/thg-src/estate
+allow	Bash	./nob test	/Users/jacksonke/thg-src/estate
+allow	Bash	echo make it so	/Users/jacksonke/thg-src/estate
+allow	Bash	make	/private/tmp

@@ -1,0 +1,17 @@
+# snapshot-readonly.sh: ~/thg-src/<org>/ is read-only; estate/ and root files are not
+deny	Write	/Users/jacksonke/thg-src/THG-Voyager/repo/x.java
+deny	Edit	/Users/jacksonke/thg-src/amq-retirement/a.md
+deny	Bash	echo hi > ~/thg-src/THG-Commerce/r/f	/Users/jacksonke/thg-src/estate
+deny	Bash	sed -i "" s/a/b/ ../THG-Fulfil/r/x.java	/Users/jacksonke/thg-src/estate
+deny	Bash	rm -rf $HOME/thg-src/THG-Unify/r	/Users/jacksonke/thg-src/estate
+deny	Bash	cp out.tsv /Users/jacksonke/thg-src/THG-B2B/r/	/Users/jacksonke/thg-src/estate
+deny	Bash	cat x | tee ../TheHutGroup/r/y	/Users/jacksonke/thg-src/estate
+deny	Bash	echo x >> "../THG-IET/r/a"	/Users/jacksonke/thg-src/estate
+allow	Write	/Users/jacksonke/thg-src/estate/local/findings.md
+allow	Write	/Users/jacksonke/thg-src/counter.md
+allow	Bash	rg foo ../THG-Voyager/ > /tmp/out.txt	/Users/jacksonke/thg-src/estate
+allow	Bash	cp ../THG-Voyager/r/a.java /tmp/x	/Users/jacksonke/thg-src/estate
+allow	Bash	cat ~/thg-src/THG-Commerce/r/f 2>/dev/null | wc -l	/Users/jacksonke/thg-src/estate
+allow	Bash	rm build/estate	/Users/jacksonke/thg-src/estate
+allow	Bash	git -C ../THG-Voyager/r log -1	/Users/jacksonke/thg-src/estate
+allow	Bash	./build/estate -o out-all ..	/Users/jacksonke/thg-src/estate

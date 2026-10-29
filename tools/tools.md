@@ -15,4 +15,4 @@ Reusable scripts written during earlier tasks. Check this index before writing a
 ## Index
 One line per tool: `- name — what it does — example invocation — deps — added YYYY-MM-DD`
 
-(none yet)
+- hook-test.sh — run a Claude Code hook against a TSV of cases (expect, tool, value, cwd), print pass/fail, exit 1 on any failure — `hook-test.sh ~/.config/agents/hooks/bash-guard.sh ~/.config/agents/hooks/tests/bash-guard.tsv` — sh, jq — added 2026-10-29

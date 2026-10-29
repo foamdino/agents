@@ -36,7 +36,9 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
      - Task context: `ripwire . --pack-task="<task description>"`
      - Callers & blast radius: `ripwire . --callers=<symbol>` or `ripwire . --impact=<symbol>`
   2. **Exact Text Search (`rg`):** Fallback for literal string matching (`rg -F`). Restrict scope using `--type` or `-g`.
+  3. **No `grep`:** it is denied in permissions, including inside pipelines. Use `rg` for filtering too (`rg -v`, `rg -n`, `rg -c`, `rg -x`).
 - **Build System Convention:** For C projects, assume `nob.c` is the build runner (`./nob`). Do not invoke `make` or `cmake` unless instructed.
+- **Claude Code hooks (`~/.config/agents/hooks/`; logs stay in `~/.claude/hooks/`):** a jq program longer than ~5 lines goes in a sibling `<hook>.jq` file run with `jq -f`, never inside a shell-quoted string; check it compiles with `jq -n -f <hook>.jq` before wiring it up. Test every hook with `~/.config/agents/tools/hook-test.sh` and keep its cases in `~/.config/agents/hooks/tests/<hook>.tsv`.
 
 ### Tool Selection (before writing any helper script)
 Shell one-liners and pipelines are fine and do not count as scripts. Before writing a script, go in this order:

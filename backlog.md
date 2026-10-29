@@ -12,15 +12,15 @@ discussion. Ordered by value. Principle: put each rule as high in this list as i
 | Memory | the agent, if recalled | index |
 
 Done: tool-first rule + `tools/tools.md` index; retro Stop hook (`retro.md`, `retro/inbox.md`,
-`~/.claude/hooks/retro-gate.sh`).
+`~/.config/agents/hooks/retro-gate.sh`).
 
 ## 1. Hard rules → PreToolUse hooks (high value, S)
 Instructions are probabilistic; these must never happen. Deny with a reason, in the style of
-`~/.claude/hooks/artifact-scratchpad-only.sh`.
-- [x] 2026-10-29 Writes under `~/thg-src/<org>/`: `~/.claude/hooks/snapshot-readonly.sh`.
+`~/.config/agents/hooks/artifact-scratchpad-only.sh`.
+- [x] 2026-10-29 Writes under `~/thg-src/<org>/`: `~/.config/agents/hooks/snapshot-readonly.sh`.
       Heuristic for Bash; false positive when a command both writes elsewhere (`rm x`) and
       names an org path.
-- [x] 2026-10-29 Package installs and make/cmake under `nob.c`: `~/.claude/hooks/bash-guard.sh`.
+- [x] 2026-10-29 Package installs and make/cmake under `nob.c`: `~/.config/agents/hooks/bash-guard.sh`.
 - [~] Write of `*.py` outside the scratchpad: dropped. The tool-first rule allows one-off scripts
       in the scratchpad, so a hook cannot tell a justified script from a lazy one; the retro
       catches the pattern instead.
@@ -28,10 +28,10 @@ Instructions are probabilistic; these must never happen. Deny with a reason, in 
   `gh pr create|merge|ready` and `git -C * switch|rebase|merge|tag` if wanted.
 
 ## 2. PostToolUse / Stop checks (medium, S)
-- [x] 2026-10-29 `~/.claude/hooks/clang-format-edited.sh`: formats only the added lines
+- [x] 2026-10-29 `~/.config/agents/hooks/clang-format-edited.sh`: formats only the added lines
       (`--lines`, from the Edit's structuredPatch), because estate's C files are not
       clang-format clean and whole-file formatting would restyle untouched code.
-- [x] 2026-10-29 `~/.claude/hooks/nob-test-on-stop.sh`: `./nob test` when .c/.h were edited
+- [x] 2026-10-29 `~/.config/agents/hooks/nob-test-on-stop.sh`: `./nob test` when .c/.h were edited
       since the last prompt; blocks once on failure, then warns. `NOB_TEST=0` disables.
 
 ## 3. Read-only allowlist (medium, S)
