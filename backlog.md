@@ -17,32 +17,34 @@ Done: tool-first rule + `tools/tools.md` index; retro Stop hook (`retro.md`, `re
 ## 1. Hard rules → PreToolUse hooks (high value, S)
 Instructions are probabilistic; these must never happen. Deny with a reason, in the style of
 `~/.claude/hooks/artifact-scratchpad-only.sh`.
-- [ ] Writes under `~/thg-src/<org>/` (read-only snapshot). Edit/Write by path; Bash is harder
-      (redirects, `sed -i`): match the common forms, accept it is not airtight.
-- [ ] `brew|pip|pip3|npm|uv) install`, `cargo install` → deny ("Dependency Rule: ask the user").
-- [ ] `make` / `cmake` in C projects with a `nob.c`.
-- [ ] Optional: Write of `*.py` outside the scratchpad and `~/.config/agents/tools/` (enforces the
-      tool-first rule; may be too strict, try it as `ask` first).
+- [x] 2026-10-29 Writes under `~/thg-src/<org>/`: `~/.claude/hooks/snapshot-readonly.sh`.
+      Heuristic for Bash; false positive when a command both writes elsewhere (`rm x`) and
+      names an org path.
+- [x] 2026-10-29 Package installs and make/cmake under `nob.c`: `~/.claude/hooks/bash-guard.sh`.
+- [~] Write of `*.py` outside the scratchpad: dropped. The tool-first rule allows one-off scripts
+      in the scratchpad, so a hook cannot tell a justified script from a lazy one; the retro
+      catches the pattern instead.
 - Note: git state changes are already in `permissions.deny`; extend that list for
   `gh pr create|merge|ready` and `git -C * switch|rebase|merge|tag` if wanted.
 
 ## 2. PostToolUse / Stop checks (medium, S)
-- [ ] PostToolUse Edit|Write on `*.c|*.h`: `clang-format -i` when a `.clang-format` is in the repo.
-- [ ] Stop (or a task-end check): `./nob test` when C files changed this turn, so "done" means
-      tests pass. Gate on a changed-file check to avoid running on every stop.
+- [x] 2026-10-29 `~/.claude/hooks/clang-format-edited.sh`: formats only the added lines
+      (`--lines`, from the Edit's structuredPatch), because estate's C files are not
+      clang-format clean and whole-file formatting would restyle untouched code.
+- [x] 2026-10-29 `~/.claude/hooks/nob-test-on-stop.sh`: `./nob test` when .c/.h were edited
+      since the last prompt; blocks once on failure, then warns. `NOB_TEST=0` disables.
 
 ## 3. Read-only allowlist (medium, S)
 - [ ] Run `/fewer-permission-prompts` to mine transcripts; expect `rg`, `sqlite3 -readonly`,
       `git diff|log|status|show`, `jq`, `wc`, `ls`.
-- [ ] Add `Edit(~/.config/agents/retro/inbox.md)` and `Read(~/.config/agents/**)` to
+- [x] Add `Edit(~/.config/agents/retro/inbox.md)` and `Read(~/.config/agents/**)` to
       `permissions.allow` so the retro does not prompt (the auto-mode classifier blocked the agent
       from adding these itself).
 
 ## 4. Shrink always-loaded context (high, M)
-- [ ] Split `estate/AGENTS.md`: keep purpose, build/test, layout, always-relevant conventions;
-      move cloud-fit internals, report/review details and the deploy/config/build/wires grammars
-      to `docs/` (e.g. `docs/cloud-fit.md`, `docs/facts.md`) with a one-line pointer each.
-      Measure before/after with `wc -w`.
+- [x] 2026-10-29 Split `estate/AGENTS.md` (5,684 → 774 words) into `docs/facts.md`,
+      `database.md`, `cloud-fit.md`, `deployability.md`, `arch.md`, moved verbatim, with a
+      "Where to read more" table.
 - [ ] Same check for `thg-src/AGENTS.md` (smaller; probably fine).
 
 ## 5. Skills for recurring workflows (medium, M)
