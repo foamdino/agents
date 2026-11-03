@@ -31,6 +31,7 @@ Instructions are probabilistic; these must never happen. Deny with a reason, in 
 - [x] 2026-10-29 `~/.config/agents/hooks/clang-format-edited.sh`: formats only the added lines
       (`--lines`, from the Edit's structuredPatch), because estate's C files are not
       clang-format clean and whole-file formatting would restyle untouched code.
+      Removed 2026-10-30: formatting happens only in each repo's pre-commit hook.
 - [x] 2026-10-29 `~/.config/agents/hooks/nob-test-on-stop.sh`: `./nob test` when .c/.h were edited
       since the last prompt; blocks once on failure, then warns. `NOB_TEST=0` disables.
 

@@ -11,6 +11,14 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - **Surface Tradeoffs:** Never pick an ambiguous interpretation silently. State assumptions before writing code.
 - **Push Back:** If a requested task introduces unnecessary complexity, explicitly suggest a simpler approach first.
 
+### Design Conversations (non-trivial changes)
+- **Look First:** Read the relevant code before asking; don't ask what it already answers.
+- **One Question at a Time.**
+- **Three Options:** Offer 3 approaches with tradeoffs; "do nothing" is a valid one. Recommend one, wait for my pick.
+- **Cite Prior Art:** Back every option or solution you offer with its provenance where one exists: a known implementation ("the Linux kernel uses bitmaps here"), a paper, a standard. Say when you know of none; never invent one.
+- **Label Your Calls:** Mark anything you filled in as your decision, with the reason. No silent defaults.
+- **Scope Creep:** If the work grows mid-task, stop and say so.
+
 ### Simplicity First
 - **Zero Speculative Code:** Write only the minimum code required to solve the immediate problem.
 - **No Premature Abstractions:** Do not create wrappers, utility classes, or interfaces for single-use code.
@@ -28,6 +36,21 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 ### Goal Verification & Error Recovery
 - **Atomic File Edits:** Make edits incrementally. Do not generate massive multi-function files in a single tool call payload.
 - **Failure Diagnostics:** If a command or build fails, analyze the diagnostic output and isolate root causes before patching.
+
+### Debugging
+- **Fix at the Source:** Reproduce first, trace a bad value back to where it originates, fix it there.
+- **One Change at a Time:** One hypothesis, one minimal change. Never stack fixes.
+- **Two Strikes:** After 2 failed fixes, stop and discuss the design.
+- **Regression Tests:** A regression test must fail without the fix.
+
+### Review Feedback (mine, tools', or external)
+- **No Performative Agreement:** Check each point against the code, then fix it or push back with reasons.
+- **Clarify First:** If any item is unclear, ask before implementing any of them.
+- **YAGNI Check:** Before building something out "properly", check it is used (`rg`); if not, propose removing it.
+- **Prior Decisions Win:** Feedback that conflicts with a decision I made → ask.
+
+### Delegated Implementation
+- **Briefs Carry Decisions:** File, exact signature, test + assertions, pinned values. The implementer writes the bodies. A brief longer than the code is the code.
 
 ### Tooling & Workspace Hierarchy
 - **Code Intelligence & Search:**
@@ -60,3 +83,4 @@ Shell one-liners and pipelines are fine and do not count as scripts. Before writ
 ## 3. Response Format
 
 - **Direct & Concise:** Omit conversational preamble, pleasantries, apologies, and structural setups. Lead directly with technical solutions, commands, or diffs.
+- **Honest Status:** Report only the checks you actually ran ("built with `./nob`, no warnings"). Building is not running: never claim the code works.
