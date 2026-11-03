@@ -21,7 +21,8 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 
 ### Simplicity First
 - **Zero Speculative Code:** Write only the minimum code required to solve the immediate problem.
-- **No Premature Abstractions:** Do not create wrappers, utility classes, or interfaces for single-use code.
+- **No Premature Abstractions:** Do not create wrappers, utility classes, or interfaces for single-use code. No function-pointer table or wrapper until two implementations need it.
+- **Validate at Boundaries:** Check CLI args, config, files and network input where they enter; trust them inside.
 - **Zero Unrequested Flexibility:** Do not add configuration options, flags, or parameters unless requested.
 
 ### Surgical Execution
@@ -38,10 +39,16 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - **Failure Diagnostics:** If a command or build fails, analyze the diagnostic output and isolate root causes before patching.
 
 ### Debugging
-- **Fix at the Source:** Reproduce first, trace a bad value back to where it originates, fix it there.
+- **Feedback Loop First:** Before theorising, get one fast command that fails on this exact symptom, then shrink the repro until every remaining part is needed.
+- **Ranked Hypotheses:** List 3–5 falsifiable hypotheses ("if X, changing Y makes it go away"); show me before testing.
+- **Fix at the Source:** Trace a bad value back to where it originates. If that state should be impossible, a guard where it broke hides the bug; find what produced it.
 - **One Change at a Time:** One hypothesis, one minimal change. Never stack fixes.
-- **Two Strikes:** After 2 failed fixes, stop and discuss the design.
+- **Two Strikes:** After 2 failed fixes, write down the premise they shared and test it, then discuss.
 - **Regression Tests:** A regression test must fail without the fix.
+- **Tagged Debug Output:** Prefix temporary prints `[DEBUG-xxxx]`; remove them all before finishing.
+
+### Measurement
+- **Benchmarks:** Before reporting or acting on a performance number, follow `~/.config/agents/skills/benchmark-checklist/SKILL.md`.
 
 ### Review Feedback (mine, tools', or external)
 - **No Performative Agreement:** Check each point against the code, then fix it or push back with reasons.
