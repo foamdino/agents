@@ -48,6 +48,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - **Clarify First:** If any item is unclear, ask before implementing any of them.
 - **YAGNI Check:** Before building something out "properly", check it is used (`rg`); if not, propose removing it.
 - **Prior Decisions Win:** Feedback that conflicts with a decision I made → ask.
+- **Contradictions:** When code, docs and what I told you disagree, report it and ask. Don't pick a side.
 
 ### Delegated Implementation
 - **Briefs Carry Decisions:** File, exact signature, test + assertions, pinned values. The implementer writes the bodies. A brief longer than the code is the code.
@@ -60,6 +61,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
      - Callers & blast radius: `ripwire . --callers=<symbol>` or `ripwire . --impact=<symbol>`
   2. **Exact Text Search (`rg`):** Fallback for literal string matching (`rg -F`). Restrict scope using `--type` or `-g`.
   3. **No `grep`:** it is denied in permissions, including inside pipelines. Use `rg` for filtering too (`rg -v`, `rg -n`, `rg -c`, `rg -x`).
+- **Quiet Output:** Use quiet flags on commands with progress output (`pull -q`, `--quiet`), or show only the tail.
 - **Build System Convention:** For C projects, assume `nob.c` is the build runner (`./nob`). Do not invoke `make` or `cmake` unless instructed.
 - **Claude Code hooks (`~/.config/agents/hooks/`; logs stay in `~/.claude/hooks/`):** a jq program longer than ~5 lines goes in a sibling `<hook>.jq` file run with `jq -f`, never inside a shell-quoted string; check it compiles with `jq -n -f <hook>.jq` before wiring it up. Test every hook with `~/.config/agents/tools/hook-test.sh` and keep its cases in `~/.config/agents/hooks/tests/<hook>.tsv`.
 
