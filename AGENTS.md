@@ -60,6 +60,12 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 ### Delegated Implementation
 - **Briefs Carry Decisions:** File, exact signature, test + assertions, pinned values. The implementer writes the bodies. A brief longer than the code is the code.
 
+### Workspace Map
+- `~/projects/<repo>` — THG projects I'm actively working on.
+- `~/thg-src/<org>/<repo>` — THG source estate, a **read-only** snapshot (enforced by hook). `~/thg-src/estate/` and files at the `~/thg-src` root are writable; `~/thg-src/AGENTS.md` covers the estate.
+- `~/side/<project>` — side projects, prototypes and unpromoted work.
+- A project's own `AGENTS.md` overrides this file.
+
 ### Tooling & Workspace Hierarchy
 - **Code Intelligence & Search:**
   1. **Structural Graph Search (`ripwire`):** Primary mechanism for context packing, call graphs, and orientation:
