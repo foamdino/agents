@@ -1,0 +1,10 @@
+# vault-gate.sh: block after a file edit or >= 5 tool calls since the last real prompt
+# Fixture transcripts are in tests/vault-gate/.
+block	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/edit.jsonl","stop_hook_active":false}
+block	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/five-tools.jsonl","stop_hook_active":false}
+block	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/meta-no-reset.jsonl","stop_hook_active":false}
+none	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/two-reads.jsonl","stop_hook_active":false}
+none	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/edit-before-prompt.jsonl","stop_hook_active":false}
+none	-	{"session_id":"s1","transcript_path":"/Users/jacksonke/.config/agents/hooks/tests/vault-gate/edit.jsonl","stop_hook_active":true}
+none	-	{"session_id":"s1","transcript_path":"/nonexistent/x.jsonl","stop_hook_active":false}
+none	-	{"session_id":"s1","stop_hook_active":false}

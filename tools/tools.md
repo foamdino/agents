@@ -16,3 +16,4 @@ Reusable scripts written during earlier tasks. Check this index before writing a
 One line per tool: `- name — what it does — example invocation — deps — added YYYY-MM-DD`
 
 - hook-test.sh — run a Claude Code hook against a TSV of cases (expect, tool, value, cwd), print pass/fail, exit 1 on any failure — `hook-test.sh ~/.config/agents/hooks/bash-guard.sh ~/.config/agents/hooks/tests/bash-guard.tsv` — sh, jq — added 2026-10-29
+- estate-card.sh — one repo's owner, class, deploy, archive verdict, and the repos that depend on it / it depends on (rest, msg, call, lib counts), from an estate DB; SQL in `estate-card.sql` — `estate-card.sh ~/thg-src/estate/db/out-all.db order-service` — sh, sqlite3 — added 2026-11-05

@@ -64,6 +64,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - `~/projects/<repo>` — THG projects I'm actively working on.
 - `~/thg-src/<org>/<repo>` — THG source estate, a **read-only** snapshot (enforced by hook). `~/thg-src/estate/` and files at the `~/thg-src` root are writable; `~/thg-src/AGENTS.md` covers the estate.
 - `~/side/<project>` — side projects, prototypes and unpromoted work.
+- `~/thoughts` — my Obsidian vault (meeting notes, ideas, project fragments). Before non-trivial work and on finishing a unit of work, follow `~/.config/agents/vault.md`. Agents write only in `~/thoughts/agent/`.
 - A project's own `AGENTS.md` overrides this file.
 
 ### Tooling & Workspace Hierarchy
@@ -88,6 +89,9 @@ Shell one-liners and pipelines are fine and do not count as scripts. Before writ
 ### Git Rule
 - **Never run state-modifying git commands.** The user always runs them: `add`, `commit`, `push`, `pull`, `fetch`, `checkout`/`switch`, `branch` (anything beyond listing), `merge`, `rebase`, `reset`, `stash`, `tag`, `clean`, `restore`, `rm`, `mv`, `config`, `init` and anything similar, plus `gh pr create`/`ready`/`merge`. Do not offer to run them either. Read-only commands (`status`, `diff`, `log`, `show`, `ls-files`, `blame`, `branch` listing, `gh pr view`/`list`/`diff`) are fine.
 - When work is ready, list the exact commands for the user to run instead.
+
+### Secrets Rule
+- **Never ingest secrets.** Don't open files whose names suggest credentials (`*key*`, `*token*`, `*password*`, keepass). If you see a key, password or token anyway, don't copy, quote, summarise or store it: not in notes, memory, logs, or prompts to other models. Refer to it by location only.
 
 ### Dependency Rule
 - **Native/Zero-Dep Priority:** Never install third-party packages or alter host shell environments without explicit confirmation. Always favor standard C libraries and native APIs.

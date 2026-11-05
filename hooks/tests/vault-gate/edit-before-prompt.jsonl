@@ -1,0 +1,6 @@
+{"type":"user","message":{"content":"do the thing"}}
+{"type":"assistant","message":{"content":[{"type":"text","text":"t"},{"type":"tool_use","name":"Write","input":{}}]}}
+{"type":"user","message":{"content":[{"type":"tool_result","tool_use_id":"x","content":"ok"}]}}
+{"type":"user","message":{"content":"do the thing"}}
+{"type":"assistant","message":{"content":[{"type":"text","text":"t"},{"type":"tool_use","name":"Read","input":{}}]}}
+{"type":"user","message":{"content":[{"type":"tool_result","tool_use_id":"x","content":"ok"}]}}

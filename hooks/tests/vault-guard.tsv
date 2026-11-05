@@ -1,0 +1,20 @@
+# vault-guard.sh: ~/thoughts is read-only except ~/thoughts/agent/
+deny	Write	/Users/jacksonke/thoughts/Meeting notes.md
+deny	Edit	/Users/jacksonke/thoughts/Muze/Similar projects.md
+deny	Write	/Users/jacksonke/thoughts/agentish.md
+deny	Bash	echo x >> ~/thoughts/Oddities.md
+deny	Bash	sed -i "" s/a/b/ "$HOME/thoughts/Muze/Similar projects.md"
+deny	Bash	rm ~/thoughts/Models.md
+deny	Bash	mv ~/thoughts/Models.md ~/thoughts/agent/
+deny	Bash	cp ~/thoughts/agent/a.md ~/thoughts/Muze/
+deny	Bash	printf x | tee /Users/jacksonke/thoughts/x.md
+allow	Write	/Users/jacksonke/thoughts/agent/2026-11-04 vault notes.md
+allow	Edit	/Users/jacksonke/thoughts/agent/Agent notes.base
+allow	Write	/Users/jacksonke/side/muze/src/arena.h
+allow	Bash	rg -il 'muze|arena' ~/thoughts
+allow	Bash	cat "/Users/jacksonke/thoughts/Muze/Similar projects.md"
+allow	Bash	cp ~/thoughts/Muze/x.md ~/thoughts/agent/x.md
+deny	Bash	cp a.md "$HOME/thoughts/Muze/Similar projects.md"
+allow	Bash	cp "$HOME/thoughts/Muze/Similar projects.md" ~/thoughts/agent/
+allow	Bash	mkdir -p ~/thoughts/agent
+allow	Bash	echo x > ~/thoughts/agent/n.md
