@@ -1,0 +1,8 @@
+# weekly-due.sh: context line when the newest dated weekly review is 7+ days old
+# Fixture note dirs are in tests/weekly-due/ (empty files; only names matter).
+none	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/recent WEEKLY_TODAY=2026-11-06
+none	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/recent WEEKLY_TODAY=2026-11-09
+output	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/recent WEEKLY_TODAY=2026-11-10
+output	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/recent WEEKLY_TODAY=2027-01-04
+output	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/decoy WEEKLY_TODAY=2026-11-06
+output	-	{"hook_event_name":"SessionStart","source":"startup"}	-	WEEKLY_NOTES_DIR=/Users/jacksonke/.config/agents/hooks/tests/weekly-due/missing WEEKLY_TODAY=2026-11-06

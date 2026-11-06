@@ -10,8 +10,10 @@ usage: estate-card.sh DB REPO
 
 Prints the scan date, class, owner, deploy profiles and archive verdict, then the repos
 that depend on REPO and the repos REPO depends on, one line per repo with a count per
-kind (rest, msg, call = runtime traffic; lib = Maven dependency). Repo-level only:
-no hosts, paths or findings. Exit 1 if REPO is unknown or ambiguous.
+kind: rest, msg, call = runtime traffic; mvn = build dependency on REPO's published
+coordinates; imp = production imports of a package REPO declares (repo_class.imported_by's
+rule). Repo-level only: no hosts, paths or findings. Exit 1 if REPO is unknown or
+ambiguous.
 EOF
 }
 

@@ -8,14 +8,17 @@ Feeds each case to the hook on stdin as hook-input JSON and compares the
 decision it prints with the expected one. Exit 0 when every case passes.
 
 cases.tsv: tab-separated, one case per line; blank lines and # comments skipped.
-  expect  tool  value  [cwd]
+  expect  tool  value  [cwd]  [env]
   expect  deny | allow | ask   (PreToolUse: hookSpecificOutput.permissionDecision)
           block                (Stop/PostToolUse: .decision)
           none                 (no output at all; "allow" also passes on no output)
   tool    tool_name: Bash, Edit, Write, ...; or "-" to pass value as the whole
           input JSON (for Stop hooks: transcript_path, stop_hook_active, ...)
   value   Bash: the command. File tools: file_path. "-": a JSON object.
-  cwd     optional; defaults to the current directory.
+  cwd     optional; defaults to the current directory ("-" also means default).
+  env     optional; space-separated VAR=value pairs set for the hook (no
+          spaces inside a value).
+  "output" as expect matches any JSON without a decision (SessionStart context).
 
 example:
   printf 'deny\tBash\tbrew install x\nallow\tBash\tbrew list\n' > cases.tsv
@@ -33,8 +36,9 @@ cases=$2
 tab=$(printf '\t')
 pass=0
 fail=0
-while IFS="$tab" read -r expect tool value cwd; do
+while IFS="$tab" read -r expect tool value cwd vars; do
 	case "$expect" in "" | \#*) continue ;; esac
+	[ "$cwd" = - ] && cwd=
 	if [ "$tool" = - ]; then
 		input=$value
 	else
@@ -42,7 +46,8 @@ while IFS="$tab" read -r expect tool value cwd; do
 		  {tool_name: $t, cwd: $c, hook_event_name: "PreToolUse",
 		   tool_input: (if $t == "Bash" then {command: $v} else {file_path: $v} end)}')
 	fi
-	out=$(printf '%s' "$input" | "$hook" 2>&1)
+	# shellcheck disable=SC2086 # vars is a list of VAR=value words
+	out=$(printf '%s' "$input" | env $vars "$hook" 2>&1)
 	if [ -z "$out" ]; then
 		got=none
 	else

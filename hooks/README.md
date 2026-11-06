@@ -14,6 +14,7 @@ and output JSON); the rest of this repo is agent-agnostic. Logs stay in `~/.clau
 | `retro-gate.sh` | Stop | retrospective after long tasks (`../retro.md`) |
 | `vault-gate.sh` | Stop | vault note after a unit of work (`../vault.md`) |
 | `nob-test-on-stop.sh` | Stop | `./nob test` when C files were edited |
+| `weekly-due.sh` | SessionStart `startup` | reminder when the weekly review (`../weekly.md`) is 7+ days old |
 
 Test: `~/.config/agents/tools/hook-test.sh <hook> tests/<hook>.tsv`. Conventions are in
 `../AGENTS.md` (Claude Code hooks).
@@ -40,6 +41,9 @@ merge this `hooks` block into `~/.claude/settings.json`:
       {"type": "command", "command": "~/.config/agents/hooks/vault-gate.sh", "timeout": 30},
       {"type": "command", "command": "~/.config/agents/hooks/nob-test-on-stop.sh", "timeout": 300}
     ]}
+  ],
+  "SessionStart": [
+    {"matcher": "startup", "hooks": [{"type": "command", "command": "~/.config/agents/hooks/weekly-due.sh", "timeout": 10}]}
   ]
 }
 ```
