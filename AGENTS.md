@@ -14,15 +14,24 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 ### Design Conversations (non-trivial changes)
 - **Look First:** Read the relevant code before asking; don't ask what it already answers.
 - **One Question at a Time.**
-- **Three Options:** Offer 3 approaches with tradeoffs; "do nothing" is a valid one. Recommend one, wait for my pick.
+- **Three Options:** Offer 3 approaches with tradeoffs, each scored on Correct by Construction; "do nothing" is a valid one. Recommend one, wait for my pick.
 - **Cite Prior Art:** Back every option or solution you offer with its provenance where one exists: a known implementation ("the Linux kernel uses bitmaps here"), a paper, a standard. Say when you know of none; never invent one.
 - **Label Your Calls:** Mark anything you filled in as your decision, with the reason. No silent defaults.
 - **Scope Creep:** If the work grows mid-task, stop and say so.
 
+### Correct by Construction
+- **The Test:** For each invariant a change touches, ask: could any code path, present or future, break it without a check it had to remember to run? A check inside the only function that can write the data passes. A caller convention, a guard where it crashed, or a test that compares two copies afterwards fails.
+- **Priority:** Rank designs by construction first, then data structures, then simplicity of the whole system (fewest mechanisms, not shortest diff).
+- **One Owner per Fact:** Each value has one writer. What can be computed from other records is computed, not stored: no counters, caches or status copies kept in step by hand.
+- **State Machines as Tables:** A record that changes through events has one status, changed only through a transition table. No bare `x.status = ...` assignments.
+- **No Repair Passes:** A sync, reconcile or fix-up job means an invariant isn't held. Find where it breaks instead.
+- **Say How It Holds:** When code relies on an invariant, name what enforces it (function, type, table) or flag it as convention-only.
+- **Propose, Don't Sprawl:** A by-construction fix bigger than the request is a proposal (Scope Creep), not a silent rewrite.
+
 ### Simplicity First
 - **Zero Speculative Code:** Write only the minimum code required to solve the immediate problem.
 - **No Premature Abstractions:** Do not create wrappers, utility classes, or interfaces for single-use code. No function-pointer table or wrapper until two implementations need it.
-- **Validate at Boundaries:** Check CLI args, config, files and network input where they enter; trust them inside.
+- **Parse at Boundaries:** Check CLI args, config, files and network input where they enter, and turn them into types that cannot hold a bad value (unsigned, whole-record, absolute not delta); trust them inside.
 - **Zero Unrequested Flexibility:** Do not add configuration options, flags, or parameters unless requested.
 
 ### Surgical Execution
