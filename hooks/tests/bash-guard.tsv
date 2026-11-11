@@ -13,3 +13,27 @@ allow	Bash	uv run tools/cloney/clone_orgs.py --teams-only ~/thg-src	/Users/jacks
 allow	Bash	./nob test	/Users/jacksonke/thg-src/estate
 allow	Bash	echo make it so	/Users/jacksonke/thg-src/estate
 allow	Bash	make	/private/tmp
+# system package managers (any platform)
+deny	Bash	sudo pacman -S jq	/tmp
+deny	Bash	pacman -Syu	/tmp
+deny	Bash	sudo pacman --noconfirm -S --needed mlr	/tmp
+deny	Bash	pacman -U ./pkg.tar.zst	/tmp
+deny	Bash	paru -S qsv-bin	/tmp
+deny	Bash	yay -S fd	/tmp
+deny	Bash	sudo apt-get -y install jq	/tmp
+deny	Bash	apt install jq	/tmp
+deny	Bash	sudo dnf install jq	/tmp
+deny	Bash	yum install jq	/tmp
+deny	Bash	zypper in jq	/tmp
+deny	Bash	apk add jq	/tmp
+deny	Bash	sudo port install jq	/tmp
+deny	Bash	flatpak install flathub org.x.Y	/tmp
+deny	Bash	snap install jq	/tmp
+allow	Bash	pacman -Ss jq	/tmp
+allow	Bash	pacman -Si jq	/tmp
+allow	Bash	pacman -Qi jq	/tmp
+allow	Bash	pacman -Qs clang	/tmp
+allow	Bash	apt list --installed	/tmp
+allow	Bash	dnf search jq	/tmp
+allow	Bash	port installed	/tmp
+allow	Bash	rg "pacman -S" docs	/tmp

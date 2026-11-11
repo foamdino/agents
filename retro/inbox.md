@@ -3,6 +3,17 @@
 Proposals from end-of-task retrospectives (`../retro.md`). Review in batches: action the
 approved ones, delete the rest.
 
+## 2026-10-29 — projects/llh
+- [install] Install Node (`sudo pacman -S nodejs`) on this machine — evidence: `node tools/build-data.js` and `node tools/sim.js --check` could not run, so a generated data file was edited by hand and the dice change and replay determinism went unverified — effort: S
+- [doc] Note that Claude in Chrome `file_upload` sends files as `application/octet-stream`, so sites that check the MIME type reject them; the fix is a capture-phase `change` listener that re-wraps the file with the right type via `DataTransfer` — evidence: three uploads were rejected as "file type isn't supported" before the cause was found — effort: S
+- [rule] For a batch job through a third-party web tool, run one item end to end (upload → settings → export → file on disk) before anything else, to find gates early — evidence: the upload workaround and settings were done before discovering that export needs an account sign-in, which blocks the whole batch — effort: S
+- [install] Install ImageMagick (`sudo pacman -S imagemagick`) so a batch of images can be reviewed as one `montage` contact sheet — evidence: naming 33 converted photos meant reading each 1200×904 PNG one at a time, which cost a lot of context for a quick visual check — effort: S
+- [doc] Note that Chrome blocks repeated downloads started by page script (anchor `download` clicks) until the user allows "automatic downloads" for that site; the blocked saves are released once allowed, which can create `(1)` duplicates — evidence: three canvas saves silently vanished in a batch, and one duplicate had to be cleaned up after allowing — effort: S
+
+## 2026-10-30 — projects/llh
+- [tool] Add a `--stamina` report to the project's `tools/sim.js` (stamina by role at half-time and full time, the stamina tier of defenders playing late in each half, defence win rate early v late, injuries and subs per match) — evidence: the same measurement was written from scratch twice as in-browser JS during stamina tuning, and had to be carried across page reloads in sessionStorage — effort: S
+- [doc] When testing a static page from `python3 -m http.server`, Chrome can serve stale JS from cache after an edit; force-refetch the scripts (`fetch(src, {cache: 'reload'})`) or add a query string before measuring — evidence: one 200-match measurement silently ran on the old card costs until a spot check showed tackle still costing 12 — effort: S
+
 ## 2026-11-03 — ~/side/t2
 - [doc] Add a Gotcha to t2's AGENTS.md: nob.c keeps a hand-written source list per test/bench binary, so when a `src/` module starts calling another module, every list that links the caller needs the callee (and its own deps); find them with `rg -F '"src/<caller>.c"' nob.c` — evidence: vfn.c gaining a call to ingest_render meant editing the itest and bench_valkey lists (plus ingest→fact→store and cJSON for the itest), found by reasoning, not by a failing build — effort: S
 

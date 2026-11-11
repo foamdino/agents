@@ -92,7 +92,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 Shell one-liners and pipelines are fine and do not count as scripts. Before writing a script, go in this order:
 1. **Installed tools first:** coreutils, `rg`, `awk`, `sqlite3`, `jq`, `ripwire`, and the project's own tools (`tools/`, `nob`). Check with `command -v`.
 2. **Personal index next:** read `~/.config/agents/tools/tools.md`, then use or extend a matching tool.
-3. **Missing well-known tool → stop and say so.** If a common tool (e.g. `jq`, `mlr`, `qsv`, `fd`, `yq`) would make the task trivial and is not installed, say: "This would be simple with `<tool>` (`brew install <tool>`). Install it, or should I write a script?" Do not install it yourself.
+3. **Missing well-known tool → stop and say so.** If a common tool (e.g. `jq`, `mlr`, `qsv`, `fd`, `yq`) would make the task trivial and is not installed, say: "This would be simple with `<tool>` (`<install command>`). Install it, or should I write a script?" Do not install it yourself. Pick the install command for the host OS: on Linux use the distro's package manager (`pacman -S`, `apt-get install`, `yum install` etc.); on macOS/Darwin use `brew install`.
 4. **Script last.** A one-off script goes in the session scratchpad. If it is reusable, propose saving it ("I'd like to save this as `<name>`: <purpose>"). Promote it to `~/.config/agents/tools/` only on approval and under the admission rules in `tools.md`.
 
 ### Git Rule
