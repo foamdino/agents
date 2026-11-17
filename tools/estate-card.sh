@@ -5,7 +5,7 @@ set -eu
 usage() {
 	cat <<'EOF'
 usage: estate-card.sh DB REPO
-  DB    estate database built by `estate -d` or db/import.sh (e.g. estate/db/out-all.db)
+  DB    estate database built by `estate -d` or db/import.sh (e.g. estate/db/current.db)
   REPO  <org>/<repo>, or a bare repo name if only one org has it
 
 Prints the scan date, class, owner, deploy profiles and archive verdict, then the repos

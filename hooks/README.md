@@ -10,11 +10,12 @@ and output JSON); the rest of this repo is agent-agnostic. Logs stay in `~/.clau
 | `artifact-scratchpad-only.sh` | PreToolUse `Artifact` | only scratchpad files are published |
 | `snapshot-readonly.sh` | PreToolUse `Edit\|Write\|MultiEdit\|NotebookEdit\|Bash` | `~/thg-src/<org>/` is read-only |
 | `vault-guard.sh` | PreToolUse `Edit\|Write\|MultiEdit\|NotebookEdit\|Bash` | `~/thoughts` is read-only except `agent/` |
-| `bash-guard.sh` | PreToolUse `Bash` | no package installs; no make/cmake under `nob.c` |
+| `bash-guard.sh` | PreToolUse `Bash` | no package installs; no make/cmake under `nob.c`; `endpoints.sh` before grepping `@*Mapping`; no unquoted `=word` (zsh) |
 | `retro-gate.sh` | Stop | retrospective after long tasks (`../retro.md`) |
 | `vault-gate.sh` | Stop | vault note after a unit of work (`../vault.md`) |
 | `nob-test-on-stop.sh` | Stop | `./nob test` when C files were edited |
 | `weekly-due.sh` | SessionStart `startup` | reminder when the weekly review (`../weekly.md`) is 7+ days old |
+| `statusline.sh` | `statusLine` (not a hook) | claude.ai usage left in the 5-hour and 7-day windows, with reset times |
 
 Test: `~/.config/agents/tools/hook-test.sh <hook> tests/<hook>.tsv`. Conventions are in
 `../AGENTS.md` (Claude Code hooks).
@@ -46,4 +47,10 @@ merge this `hooks` block into `~/.claude/settings.json`:
     {"matcher": "startup", "hooks": [{"type": "command", "command": "~/.config/agents/hooks/weekly-due.sh", "timeout": 10}]}
   ]
 }
+```
+
+and the status line, at the top level of the same file:
+
+```json
+"statusLine": {"type": "command", "command": "~/.config/agents/hooks/statusline.sh"}
 ```

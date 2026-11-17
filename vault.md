@@ -17,12 +17,15 @@ without `-g`/`--glob`**: an explicit glob overrides ignore files. Filter rg outp
 - A note that clashes with the task (a meeting decision, an earlier fix, an open proposal)
   → report it and ask before going on (Contradictions rule).
 - Work in `~/projects/<repo>`: also run
-  `~/.config/agents/tools/estate-card.sh ~/thg-src/estate/db/out-all.db <repo>`. If the
+  `~/.config/agents/tools/estate-card.sh ~/thg-src/estate/db/current.db <repo>`. If the
   task changes an API, message, client library or deploy, its "depends-on-this" repos and
   owners are a clash like the notes above: report them and ask. The card is a snapshot
   (its `scan` line); notes may name repos and counts, never hosts or findings.
 - A proposal for the same component in another project ("high-water mark for `arena.h`" in
   t2 while working on muze) → mention it.
+- Design work (Design Conversations in `AGENTS.md`): read `agent/atlas/Design atlas.md`
+  and the cards under every shape the problem matches. A card whose idea argues against
+  the planned design is a clash like the notes above: report it.
 
 ## Capture (when a unit of work is finished)
 A unit is finished when its task is done and nothing is waiting on the user's answer or
@@ -86,3 +89,41 @@ Tags are lowercase, `/`-nested, hyphens for spaces: `project/order-processing`,
 ~/thoughts/agent | sort -u`.
 
 `~/thoughts/agent/Agent notes.base` is an Obsidian Bases view over these notes; don't edit it.
+
+## Design atlas
+Ideas from outside computing, indexed by problem shape, not by field: the design counterpart
+of `tools/tools.md`. Index: `~/thoughts/agent/atlas/Design atlas.md`; one card per idea at
+`~/thoughts/agent/atlas/<Idea>.md`.
+
+- Add a card when an Outside Option (`AGENTS.md`) brings up an idea the atlas lacks, whether
+  or not it was picked. Add its line to the index under each of its shapes in the same edit.
+- Shapes are a closed list in the index. A new shape is proposed to the user, not added.
+- One idea per card. An idea already carded gets a line under "In software" or "Where it
+  breaks" instead of a second card.
+- Cite a work you know exists (author, title, year). None known → don't add the card.
+
+```markdown
+---
+type: atlas
+date: 2026-11-17
+field: manufacturing
+shapes: [invariants]           # slugs from the index
+aliases: [mistake-proofing]
+tags: [agent, type/atlas, field/manufacturing, shape/invariants]
+---
+# <Idea>
+
+<Two or three sentences: the idea in its own field's terms.>
+
+## Source
+Author, *Title* (year).
+
+## In software
+What it changes in a design; known software uses, with their source.
+
+## Where it breaks
+The assumptions the idea needs that software may not meet.
+
+## Related
+- [[Other card]] — why
+```

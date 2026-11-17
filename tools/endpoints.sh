@@ -5,7 +5,7 @@ set -eu
 usage() {
 	cat <<'EOF'
 usage: endpoints.sh DB REPO
-  DB    estate database built by `estate -d` or db/import.sh (e.g. estate/db/out-all.db)
+  DB    estate database built by `estate -d` or db/import.sh (e.g. estate/db/current.db)
   REPO  <org>/<repo>, or a bare repo name if only one org has it
 
 Prints the scan date, the repo and its default server.servlet.context-path (if set), then

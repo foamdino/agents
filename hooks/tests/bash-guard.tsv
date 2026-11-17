@@ -1,4 +1,4 @@
-# bash-guard.sh: no package installs; no make/cmake where nob.c exists
+# bash-guard.sh: no package installs (language and system package managers);no make/cmake where nob.c exists; endpoints.sh before @*Mapping greps; no unquoted =word (zsh)
 deny	Bash	brew install mlr	/Users/jacksonke/thg-src/estate
 deny	Bash	pip3 install requests	/Users/jacksonke/thg-src/estate
 deny	Bash	cd x && npm i lodash	/Users/jacksonke/thg-src/estate
@@ -37,3 +37,29 @@ allow	Bash	apt list --installed	/tmp
 allow	Bash	dnf search jq	/tmp
 allow	Bash	port installed	/tmp
 allow	Bash	rg "pacman -S" docs	/tmp
+# endpoints.sh before grepping Spring mappings
+deny	Bash	rg -n '@(Get|Post|Put|Delete|Request)Mapping' src/main/java	/Users/jacksonke/projects/heimdallr
+deny	Bash	cd ~/projects/order-service && rg -n "@\w*Mapping" -g '*.java'	/Users/jacksonke/projects/order-service
+deny	Bash	rg -l @RequestMapping .	/Users/jacksonke/projects/heimdallr
+allow	Bash	rg -n '@RequestMapping' src/main/java/com/thg/OrderResource.java	/Users/jacksonke/projects/order-service
+allow	Bash	rg -n '@GetMapping' src  # not in scan	/Users/jacksonke/projects/heimdallr
+allow	Bash	~/.config/agents/tools/endpoints.sh ~/thg-src/estate/db/current.db heimdallr | rg orders	/Users/jacksonke/projects/heimdallr
+allow	Bash	rg -n 'RequestMappingHandlerAdapter' src	/Users/jacksonke/projects/heimdallr
+# zsh: unquoted word starting with =
+deny	Bash	cat a.md; echo =====; cat b.md	/private/tmp
+deny	Bash	[ "$x" == y ] && echo same	/private/tmp
+allow	Bash	cat a.md; echo '====='; cat b.md	/private/tmp
+allow	Bash	echo "a ==b"	/private/tmp
+allow	Bash	[[ $x == y ]] && echo same	/private/tmp
+allow	Bash	[ "$x" = y ] && echo same	/private/tmp
+allow	Bash	FOO=bar env | rg FOO	/private/tmp
+allow	Bash	sed -E 's/ =x//' f	/private/tmp
+# heredoc bodies: zsh does no =cmd expansion inside them, quoted or not
+allow	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"python3 - <<'EOF'\nx = 1\nif x == 1: print(x)\nEOF"}}
+allow	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<EOF > f.txt\nx =ls\nEOF\nwc -l f.txt"}}
+allow	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<\"PY\" | python3 -\na =2\nPY"}}
+allow	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<-EOF\n\tx == y\n\tEOF"}}
+allow	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<A; cat <<B\nx =a\nA\nx =b\nB"}}
+deny	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<'EOF'\nx = 1\nEOF\necho ====="}}
+deny	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<< 'x = 1'; echo ====="}}
+deny	-	{"tool_name":"Bash","cwd":"/private/tmp","hook_event_name":"PreToolUse","tool_input":{"command":"cat <<-EOF\n\tx\n\tEOF\n[ a == b ]"}}

@@ -1,0 +1,205 @@
+<!doctype html>
+<!--
+  Local single-page report skeleton: the format for every report the user asks for.
+
+  Use:
+    1. Copy this file to where the work lives (THG estate work: ~/thg-src/estate/local/<topic>-YYYY-MM-DD.html).
+    2. Fill in the TITLE / SUBTITLE, the tabs and their sections; delete the example rows.
+    3. Keep it one self-contained file: inline CSS and JS, no CDN, no fonts, no network.
+    4. Check it before handing over:
+         ~/.config/agents/tools/page-probe.sh <file> ~/.config/agents/templates/report-probe.js
+       (clicks every tab and filter; exit 1 on any JS error).
+
+  NEVER publish it: not to an artifacts site, the Artifact tool, Claude Docs, a gist or any other
+  service. Reports stay local; the user shares them as a zip to named people when they choose.
+
+  Conventions: one claim per row or bullet with file:line evidence; a confidence badge on each
+  finding (confirmed / structural / heuristic); "my call" on anything the author decided; every
+  finding ends with an Ask for the owning team; the Method tab records the exact queries/filters.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TITLE</title>
+<style>
+:root {
+	--bg: #f6f5f1; --fg: #1d2330; --muted: #5b6375; --band: #ffffffb0; --band-line: #c9cdd6;
+	--box-line: #1f3b5c; --tab-on: #1f3b5c; --tab-on-fg: #ffffff; --row: #00000008; --node: #ffffff;
+	--high: #b91c1c; --med: #b45309; --low: #1d4ed8; --ok: #15803d; --na: #6b7280;
+	--rin: #1d4ed8; --rout: #c2410c;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #15181e; --fg: #e6e8ee; --muted: #9aa3b5; --band: #1d212a; --band-line: #343a47;
+		--box-line: #8aa4c8; --tab-on: #8aa4c8; --tab-on-fg: #15181e; --row: #ffffff08; --node: #1d212a;
+		--high: #f87171; --med: #fbbf24; --low: #60a5fa; --ok: #4ade80; --na: #9ca3af;
+		--rin: #60a5fa; --rout: #fb923c;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #15181e; --fg: #e6e8ee; --muted: #9aa3b5; --band: #1d212a; --band-line: #343a47;
+	--box-line: #8aa4c8; --tab-on: #8aa4c8; --tab-on-fg: #15181e; --row: #ffffff08; --node: #1d212a;
+	--high: #f87171; --med: #fbbf24; --low: #60a5fa; --ok: #4ade80; --na: #9ca3af;
+	--rin: #60a5fa; --rout: #fb923c;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 22px 0 8px; }
+h3 { font-size: 14px; margin: 18px 0 8px; }
+p.sub { color: var(--muted); margin: 0 0 14px; max-width: 900px; }
+code, .mono { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+pre { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--row); border: 1px solid var(--band-line); padding: 10px 12px; border-radius: 6px; overflow-x: auto; margin: 6px 0 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+.tabs button, .filt button { font: inherit; font-size: 13px; padding: 5px 13px; border: 1.5px solid var(--box-line); border-radius: 999px; background: transparent; color: var(--fg); cursor: pointer; }
+.tabs button[aria-selected="true"], .filt button[aria-pressed="true"] { background: var(--tab-on); color: var(--tab-on-fg); }
+.filt { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; }
+.filt button { font-size: 12px; padding: 3px 11px; }
+.view[hidden] { display: none; }
+.band { border: 1.5px solid var(--band-line); border-radius: 8px; background: var(--band); padding: 4px 16px 14px; margin-bottom: 14px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.kpi { border: 1.5px solid var(--band-line); border-radius: 8px; background: var(--band); padding: 10px 12px; }
+.kpi > b { display: block; font-size: 20px; font-family: ui-monospace, Menlo, monospace; }
+.kpi small { display: block; color: var(--muted); font-size: 12px; }
+.badge { display: inline-block; padding: 0 7px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid currentColor; white-space: nowrap; }
+.b-critical { color: var(--high); background: color-mix(in srgb, var(--high) 12%, transparent); }
+.b-high { color: var(--high); } .b-medium { color: var(--med); } .b-low { color: var(--low); }
+.b-confirmed { color: var(--ok); } .b-structural { color: var(--low); } .b-heuristic { color: var(--med); }
+.b-rec { color: var(--ok); } .b-na { color: var(--na); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--band-line); vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+tbody tr:nth-child(even) { background: var(--row); }
+tr[hidden] { display: none; }
+td code { overflow-wrap: anywhere; }
+td.n { font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+.tbl { overflow-x: auto; }
+.rule { border: 1.5px solid var(--band-line); border-radius: 8px; background: var(--band); margin-bottom: 10px; }
+.rule > summary { padding: 8px 12px; cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.rule > summary::-webkit-details-marker { display: none; }
+.rule > summary b { font-size: 14px; }
+.rule .body { padding: 0 12px 10px; }
+.rule .body p { margin: 6px 0; }
+.ask { border-left: 4px solid var(--box-line); padding: 4px 10px; margin: 8px 0 2px; background: var(--row); }
+.warn { border-left: 4px solid var(--med); padding: 6px 10px; margin: 8px 0; background: var(--row); }
+.muted { color: var(--muted); }
+ul.plain, ol.plain { margin: 4px 0; padding-left: 20px; }
+ul.plain li, ol.plain li { margin: 2px 0; }
+.scroll { overflow-x: auto; border: 1.5px solid var(--band-line); border-radius: 8px; background: var(--band); padding: 8px; }
+svg text { fill: var(--fg); font-size: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+svg text.m { fill: var(--muted); font-size: 11px; }
+svg text.h { font-weight: 700; font-size: 13px; }
+svg .lane { fill: var(--node); stroke: var(--box-line); stroke-width: 1.5; }
+svg .warnbox { fill: var(--node); stroke: var(--med); stroke-width: 1.8; }
+svg .gap { fill: var(--node); stroke: var(--high); stroke-width: 1.8; stroke-dasharray: 5 3; }
+svg .in { stroke: var(--rin); stroke-width: 1.6; fill: none; }
+svg .out { stroke: var(--high); stroke-width: 1.6; fill: none; stroke-dasharray: 5 3; }
+footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+@media (max-width: 640px) { .kpis { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+<h1>TITLE</h1>
+<p class="sub">SUBTITLE: the question, what was read (scan/date, sources), what is out of scope. <b>Local only.</b></p>
+
+<div class="tabs" role="tablist">
+	<button role="tab" aria-selected="true" data-view="overview">Overview</button>
+	<button role="tab" aria-selected="false" data-view="findings">Findings</button>
+	<button role="tab" aria-selected="false" data-view="options">Options</button>
+	<button role="tab" aria-selected="false" data-view="map">Source map</button>
+	<button role="tab" aria-selected="false" data-view="method">Asks &amp; method</button>
+</div>
+
+<section class="view" id="overview">
+<div class="kpis">
+	<div class="kpi"><b>0</b><small>KPI: one number, one sentence of meaning.</small></div>
+	<div class="kpi"><b>0</b><small>KPI.</small></div>
+</div>
+<div class="band">
+<h2>Headline</h2>
+<ol class="plain">
+<li><b>Claim.</b> Evidence (<code>file.ext:line</code>). <span class="badge b-confirmed">confirmed</span></li>
+</ol>
+</div>
+<div class="band">
+<h2>Recommendation</h2>
+<p>What to do and why, in a few sentences.</p>
+</div>
+</section>
+
+<section class="view" id="findings" hidden>
+<details class="rule" open><summary><b>Finding title</b> <span class="badge b-high">high</span> <span class="badge b-structural">structural</span></summary><div class="body">
+<p>What, where (<code>file:line</code>), why it matters.</p>
+<p class="ask"><b>Ask:</b> the question for the owning team.</p></div></details>
+</section>
+
+<section class="view" id="options" hidden>
+<!-- Design conversations: three options (do nothing is valid) plus one from outside computing,
+     each scored on Correct by Construction, with prior art; mark the recommendation. -->
+<details class="rule"><summary><b>A. Do nothing</b> <span class="badge b-na">baseline</span></summary><div class="body"><p><b>Correct by construction:</b> … <b>Prior art:</b> …</p></div></details>
+<details class="rule" open><summary><b>B. Option</b> <span class="badge b-rec">recommended</span></summary><div class="body"><p><b>Correct by construction:</b> … <b>Prior art:</b> …</p></div></details>
+</section>
+
+<section class="view" id="map" hidden>
+<div class="filt"><span class="muted">Filter:</span>
+<button data-f="all" aria-pressed="true">all</button><button data-f="a" aria-pressed="false">group a</button><button data-f="b" aria-pressed="false">group b</button>
+<span class="muted" id="rcount"></span></div>
+<div class="tbl"><table id="rtable">
+<thead><tr><th>Group</th><th>Where</th><th>Today</th><th>Change</th><th>Size</th><th>Conf.</th></tr></thead>
+<tbody></tbody></table></div>
+</section>
+
+<section class="view" id="method" hidden>
+<h2>Asks</h2>
+<table><thead><tr><th>#</th><th>For</th><th>Question</th></tr></thead>
+<tbody><tr><td>A1</td><td>team</td><td>Question.</td></tr></tbody></table>
+<h2>Method</h2>
+<ul class="plain">
+<li>Exact queries, filters and commands behind every number, so it can be re-run.</li>
+<li>Not covered: what the sources cannot see.</li>
+</ul>
+</section>
+
+<footer>Generated from SOURCES on DATE. Confidence: <span class="badge b-confirmed">confirmed</span> read in source · <span class="badge b-structural">structural</span> from declarations, config or code shape · <span class="badge b-heuristic">heuristic</span> name matching or inference. "My call" marks the author's own decisions.</footer>
+</main>
+
+<script>
+(function () {
+// One object per row; keep data here so the table, filters and counts share one source.
+const ROWS = [
+	{ g: "a", w: "<code>path/File.java:42</code>", t: "Today", x: "Change", s: "S", v: "confirmed" },
+	{ g: "b", w: "<code>path/Other.java:7</code>", t: "Today", x: "Change", s: "M", v: "structural" }
+];
+const tb = document.querySelector("#rtable tbody");
+ROWS.forEach(function (r) {
+	const tr = document.createElement("tr");
+	tr.dataset.g = r.g;
+	tr.innerHTML = "<td>" + r.g + "</td><td>" + r.w + "</td><td>" + r.t + "</td><td>" + r.x + "</td><td>" + r.s +
+		"</td><td><span class=\"badge b-" + r.v + "\">" + r.v + "</span></td>";
+	tb.appendChild(tr);
+});
+const btns = document.querySelectorAll("#map .filt button");
+function apply(f) {
+	let n = 0;
+	tb.querySelectorAll("tr").forEach(function (tr) { const ok = f === "all" || tr.dataset.g === f; tr.hidden = !ok; if (ok) n++; });
+	btns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.f === f ? "true" : "false"); });
+	document.getElementById("rcount").textContent = n + " of " + ROWS.length + " shown.";
+}
+btns.forEach(function (b) { b.addEventListener("click", function () { apply(b.dataset.f); }); });
+apply("all");
+})();
+const tabs = document.querySelectorAll(".tabs button");
+function show(v) {
+	tabs.forEach(function (b) { b.setAttribute("aria-selected", b.dataset.view === v); });
+	document.querySelectorAll(".view").forEach(function (s) { s.hidden = s.id !== v; });
+	try { history.replaceState(null, "", "#" + v); } catch (e) {}
+}
+tabs.forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.view); }); });
+const h = location.hash.slice(1);
+if (document.getElementById(h)) show(h);
+</script>
+</body>
+</html>

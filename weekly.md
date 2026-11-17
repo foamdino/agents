@@ -19,6 +19,11 @@ The only file written is the review note.
   and ideas that commits don't show.
 - The user's own notes changed in the window (read-only; never `-g`, see `vault.md`):
   `rg --files -0 ~/thoughts | xargs -0 sh -c 'find "$@" -prune -newermt "$0"' <since> | rg -v '/agent/'`.
+- Usage: `~/.config/agents/tools/weekly-usage.sh --since <since> ~/.claude/usage.tsv ~/.claude/projects`.
+  Plan peaks come from the status line's log (`hooks/statusline.sh`, which logs only while a
+  session is open, so quiet hours are missing); tokens per repo from the transcripts (each reply
+  charged to the git repo of the directory it ran in; a non-repo directory such as `~/thg-src`
+  stands for itself).
 - Previous review: the newest `~/thoughts/agent/* weekly review.md`. Don't repeat its headline
   suggestion unless something changed; say if it was picked up.
 - Drill into a commit or file only when a theme or suggestion needs it (`git show --stat`).
@@ -52,6 +57,17 @@ The point of this section is to show the week's real size, so it must be complet
 still work done). Per theme: a bold title, 2–4 lines on what changed and why, the projects, and
 links to the agent notes behind it. Include work with no commit (uncommitted files, non-git
 projects).
+
+### Usage
+How much of the plan the week took and where it went, so the user can judge their effectiveness.
+- One line: peak % of each 7-day window, the number of 5-hour windows and how many hit 80%+.
+  Say "partial week" when the tool does.
+- Per repo: a table of repo, output tokens and share, from the tool, one row per repo with 1%+
+  of output and the rest summed as one "other (N repos)" row.
+- Per theme from *What I did*: its share of output tokens (sum the projects behind it) next to
+  what it produced (commits, notes, decisions). Name the theme that cost the most for the least
+  output, and why if the notes say (rework, a long debug, re-reading after compaction).
+- Numbers only from the tool; don't estimate a % of plan from tokens.
 
 ### Try this next week
 **One** suggestion: a change made this week in project A that would be a small, useful step for
