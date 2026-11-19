@@ -41,6 +41,9 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - **Strict Scope Boundaries:** Touch only the files and lines necessary for the request. Do not format or re-style adjacent code.
 - **Clean Your Own Mess:** Only delete unused imports, variables, or functions introduced by YOUR changes.
 - **Style Matching:** Adhere strictly to existing codebase formatting and architectural patterns.
+- **Build Settings Are Out of Scope:** Don't change compiler flags, optimisation level, C standard or target unless asked. Never silence a warning with `-Wno-*`, a `#pragma` or a cast; a warning is a defect, so fix its cause.
+- **Generated Code:** Don't edit generated files. Change the generator or its input and regenerate.
+- **Verify Before Correcting:** Before changing a GNU extension, pragma or idiom you don't recognise, check the compiler docs or how the codebase uses it elsewhere. It may be deliberate.
 
 ---
 
@@ -54,6 +57,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 - **Feedback Loop First:** Before theorising, get one fast command that fails on this exact symptom, then shrink the repro until every remaining part is needed.
 - **Ranked Hypotheses:** List 3–5 falsifiable hypotheses ("if X, changing Y makes it go away"); show me before testing.
 - **Fix at the Source:** Trace a bad value back to where it originates. If that state should be impossible, a guard where it broke hides the bug; find what produced it.
+- **Sibling Sweep:** After fixing a defect, `rg` for the same pattern in related functions. Report what you find; don't fix it (Scope Creep).
 - **One Change at a Time:** One hypothesis, one minimal change. Never stack fixes.
 - **Two Strikes:** After 2 failed fixes, write down the premise they shared and test it, then discuss.
 - **Regression Tests:** A regression test must fail without the fix.
@@ -71,6 +75,7 @@ Biased toward caution, surgical execution, and zero unnecessary dependencies.
 
 ### Delegated Implementation
 - **Briefs Carry Decisions:** File, exact signature, test + assertions, pinned values. The implementer writes the bodies. A brief longer than the code is the code.
+- **Questions, Not Conclusions:** A research or review subagent gets the question, never your preferred answer. Require evidence, files inspected, uncertainty and better alternatives.
 
 ### Workspace Map
 - `~/projects/<repo>` — THG projects I'm actively working on.
